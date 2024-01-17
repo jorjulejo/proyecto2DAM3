@@ -1,0 +1,81 @@
+/* CameraForm.css */
+.camera-form {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.camera-form .form-group {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.camera-form label {
+  margin-bottom: 0;
+  width: 30%;
+}
+
+.camera-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1;
+}
+
+.camera-form .file-input-group {
+  position: relative;
+}
+
+.camera-form .file-input-group label {
+  width: fit-content;
+}
+
+.camera-form .file-upload-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 24px;
+}
+.input-wrapper{
+  width: max-content;
+}
+.camera-form input[type="file"] {
+  display: none;
+}
+
+.camera-form .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.camera-form .form-actions button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.camera-form .form-actions button[type="button"] {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+}
+
+.camera-form .form-actions button[type="submit"] {
+  border: none;
+  background-color: #333;
+  color: #fff;
+}
+
+.camera-form .form-actions button:hover {
+  opacity: 0.8;
+}
+
+input#urlImagen {
+  width: 370px;
+}

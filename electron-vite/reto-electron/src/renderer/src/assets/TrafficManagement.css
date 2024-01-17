@@ -1,0 +1,36 @@
+.traffic-management {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  color: black;
+}
+
+.main-content {
+  flex-grow: 1;
+  background-color: white;
+}
+
+.main-content header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #e8e8e8;
+}
+
+.welcome {
+  padding: 20px;
+}
+
+.active{
+  color: blue;
+}
+.inactive{
+  color: black;
+}
+
+

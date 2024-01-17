@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+  oracle-db:
+    image: oracle/database:21.3.0-xe
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    environment:
+      ORACLE_PWD: 20022002
+      ORACLE_CHARACTERSET: AL32UTF8
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./sql-Oracle/startup:/opt/oracle/scripts/startup
+      - ./sql-Oracle/sql:/opt/oracle/scripts/other-scripts
+      - ./execute-sql-scripts.sh:/opt/oracle/scripts/execute-sql-scripts.sh
+    healthcheck:
+      test: ["CMD", "sqlplus", "-L", "sys/Oracle_123@//localhost:1521/ORCLCDB as sysdba", "SELECT 1 FROM DUAL;"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+    shm_size: 2gb
+    restart: on-failure
+
+  laravel-api:
+    build:
+      context: ./auth-api
+      dockerfile: Dockerfile # Asegúrate de que este Dockerfile instala OCI8
+    ports:
+      - "8001:80"
+    depends_on:
+      - oracle-db
+    environment:
+      DB_CONNECTION: oracle
+      DB_HOST: oracle-db
+      DB_PORT: 1521
+      DB_DATABASE: XEPDB1
+      DB_USERNAME: jorju
+      DB_PASSWORD: 20022002
+      # Otras variables de entorno necesarias
+    volumes:
+      - ./auth-api:/var/www/html
+    restart: on-failure
+  
+volumes:
+  oracle-data:
+  oracle-scripts:

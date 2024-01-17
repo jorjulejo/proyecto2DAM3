@@ -1,0 +1,64 @@
+/* FlujosForm.css */
+.flujos-form {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  
+  .flujos-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .flujos-form label {
+    margin-bottom: 0;
+    width: 30%;
+  }
+  
+  .flujos-form input[type="text"],
+  .flujos-form input[type="number"],
+  .flujos-form input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex-grow: 1;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .form-actions button {
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Estilos para el botón Borrar */
+  .form-actions button[type="button"] {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+  }
+  
+  /* Estilos para el botón Crear */
+  .form-actions button[type="submit"] {
+    border: none;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .form-actions button:hover {
+    opacity: 0.8;
+  }
+  

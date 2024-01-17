@@ -1,0 +1,61 @@
+.incident-form {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.incident-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.incident-form label {
+  margin-bottom: 0; /* Eliminar el margen inferior ya que ahora está en .form-group */
+  width: 30%; /* Ajusta este valor según tus necesidades */
+}
+
+.incident-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1; /* Ocupa el espacio restante en .form-group */
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; /* Alinea los elementos al final del contenedor (derecha) */
+  gap: 10px; /* Añade espacio entre los botones si lo necesitas */
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilos para el botón Borrar */
+.form-actions button[type="button"] {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Estilos para el botón Crear */
+.form-actions button[type="submit"] {
+  border: none;
+  background-color: #333;
+  color: #fff;
+}
+
+.form-actions button:hover {
+  opacity: 0.8;
+}
+
