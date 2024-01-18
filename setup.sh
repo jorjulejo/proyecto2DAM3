@@ -23,6 +23,10 @@ rm -rf "$REPO_DIR"
 echo "Levantando servicios con Docker Compose..."
 docker-compose up --build -d
 
-
+cd electron-vite
+npm install
+cd reto-electron
+npm install
+npm run dev
 
 echo "Proceso completado."

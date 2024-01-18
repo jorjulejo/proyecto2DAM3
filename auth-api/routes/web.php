@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    try {
+        $conn = oci_connect(env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_HOST') . ':' . env('DB_PORT') . '/' . env('DB_DATABASE'));
+        if (!$conn) {
+            throw new Exception('Error de conexión con la base de datos Oracle.');
+        }
+        oci_close($conn);
+        return new Response('Conexión exitosa con la base de datos Oracle.', 200);
+    } catch (Exception $e) {
+        return new Response('Error al conectar con la base de datos Oracle: ' . $e->getMessage(), 500);
+    }
 });

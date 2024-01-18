@@ -3,6 +3,8 @@
   margin: 20px;
   padding: 20px;
   border: 1px solid #ccc;
+  color: black ;
+
 }
 
 .camera-form .form-group {
@@ -14,7 +16,7 @@
 
 .camera-form label {
   margin-bottom: 0;
-  width: 30%;
+  width: 40%;
 }
 
 .camera-form input {
@@ -77,5 +79,9 @@
 }
 
 input#urlImagen {
-  width: 370px;
+  width: 345px;
+}
+
+.camara_text{
+margin-bottom: 20px;
 }

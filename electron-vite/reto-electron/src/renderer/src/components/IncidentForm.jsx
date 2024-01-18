@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import '../assets/IncidentForm.css'; // Asegúrate de crear este archivo CSS para estilizar tu formulario
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import '../assets/IncidentForm.css';
 
 function IncidentForm() {
-  // Estado inicial del formulario
+  const location = useLocation();
+  const isEditing = location.state && location.state.incident;
+
   const initialState = {
     tipo: '',
     causa: '',
@@ -14,10 +17,14 @@ function IncidentForm() {
     longitud: ''
   };
 
-  // Estado del formulario
   const [incident, setIncident] = useState(initialState);
 
-  // Manejar cambios en los inputs
+  useEffect(() => {
+    if (isEditing) {
+      setIncident(location.state.incident);
+    }
+  }, [location, isEditing]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setIncident(prevState => ({
@@ -26,24 +33,22 @@ function IncidentForm() {
     }));
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const method = isEditing ? 'PUT' : 'POST';
+    const url = `https://tu-api.com/incidencias/${isEditing ? incident.id : ''}`;
 
     try {
-      const response = await fetch('https://tu-api.com/incidencias', { // Reemplaza con la URL de tu API
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
-          // Agrega más cabeceras si es necesario, como tokens de autenticación
         },
         body: JSON.stringify(incident)
       });
 
       if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData); // Procesa la respuesta de la API como necesites
-        // Opcional: resetear el formulario o redireccionar al usuario
+        // Procesar respuesta
         setIncident(initialState);
       } else {
         console.error('Error en la respuesta del servidor:', response.status);
@@ -53,14 +58,32 @@ function IncidentForm() {
     }
   };
 
-  // Manejar la limpieza del formulario
-  const handleReset = () => {
-    setIncident(initialState);
+  const handleDelete = async () => {
+    if (isEditing) {
+      try {
+        const response = await fetch(`https://tu-api.com/incidencias/${incident.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (response.ok) {
+          // Procesar respuesta
+          setIncident(initialState);
+        } else {
+          console.error('Error en la respuesta del servidor:', response.status);
+        }
+      } catch (error) {
+        console.error('Error al intentar borrar:', error);
+      }
+    }
   };
 
   return (
     <div className="incident-form">
-      <h1>Gestión de Tráfico - Incidencias</h1>
+
+      <h1 className='incidencia_text'>Gestión de Tráfico - Incidencias</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Tipo</label>
@@ -95,8 +118,8 @@ function IncidentForm() {
           <input type="text" name="longitud" value={incident.longitud} onChange={handleChange} />
         </div>
         <div className="form-actions">
-          <button type="button" onClick={handleReset}>Borrar</button>
-          <button type="submit">Crear</button>
+          {isEditing && <button type="button" onClick={handleDelete}>Borrar</button>}
+          <button type="submit">{isEditing ? 'Actualizar' : 'Crear'}</button>
         </div>
       </form>
     </div>

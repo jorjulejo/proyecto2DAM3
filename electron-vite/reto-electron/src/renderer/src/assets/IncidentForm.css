@@ -2,6 +2,7 @@
   margin: 20px;
   padding: 20px;
   border: 1px solid #ccc;
+  color: black ;
 }
 
 .incident-form form {
@@ -18,7 +19,7 @@
 
 .incident-form label {
   margin-bottom: 0; /* Eliminar el margen inferior ya que ahora está en .form-group */
-  width: 30%; /* Ajusta este valor según tus necesidades */
+  width: 40%; /* Ajusta este valor según tus necesidades */
 }
 
 .incident-form input {
@@ -59,3 +60,6 @@
   opacity: 0.8;
 }
 
+.incidencia_text{
+  margin-bottom: 10px;
+}

@@ -3,6 +3,7 @@
     margin: 20px;
     padding: 20px;
     border: 1px solid #ccc;
+    color: black ;
   }
   
   .flujos-form form {
@@ -19,7 +20,7 @@
   
   .flujos-form label {
     margin-bottom: 0;
-    width: 30%;
+    width: 40%;
   }
   
   .flujos-form input[type="text"],
@@ -60,5 +61,9 @@
   
   .form-actions button:hover {
     opacity: 0.8;
+  }
+
+  flujo_text{
+    margin-bottom: 20px;
   }
   

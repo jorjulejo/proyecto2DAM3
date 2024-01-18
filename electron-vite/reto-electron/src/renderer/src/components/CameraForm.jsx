@@ -1,8 +1,12 @@
 // CameraForm.jsx
-import React, { useState } from 'react';
-import '../assets/CameraForm.css'; // Make sure this CSS file is created and contains the appropriate styles
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import '../assets/CameraForm.css';
 
 function CameraForm() {
+    const location = useLocation();
+    const isEditing = location.state && location.state.camera;
+
     const initialState = {
         nombre: '',
         urlImagen: '',
@@ -15,6 +19,12 @@ function CameraForm() {
 
     const [camera, setCamera] = useState(initialState);
 
+    useEffect(() => {
+        if (isEditing) {
+            setCamera(location.state.camera);
+        }
+    }, [location, isEditing]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCamera(prevState => ({
@@ -22,6 +32,7 @@ function CameraForm() {
             [name]: value
         }));
     };
+
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -34,11 +45,19 @@ function CameraForm() {
         }
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Aquí manejarías el envío de los datos, por ejemplo, a un servidor o a una API
-        console.log(camera);
-        // Implement the logic to send the data to your API
+        const method = isEditing ? 'PUT' : 'POST';
+        const url = `https://tu-api.com/camaras/${isEditing ? camera.id : ''}`;
+
+        // ...manejo de la petici�n a la API
+    };
+
+    const handleDelete = async () => {
+        if (isEditing) {
+            // ...manejo de la petici�n DELETE a la API
+        }
     };
 
     const handleReset = () => {
@@ -47,7 +66,7 @@ function CameraForm() {
 
     return (
         <div className="camera-form">
-            <h1>Gestión de Tráfico - Cámaras</h1>
+            <h1 className='camara_text'>Gestión de Tráfico - Cámaras</h1>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Nombre</label>
@@ -67,7 +86,7 @@ function CameraForm() {
                             name="urlImagen"
                             value={camera.urlImagen}
                             onChange={handleChange}
-                            
+
                         />
                         <label htmlFor="archivoImagen" className="file-upload-icon">
                             📷 {/* Replace with an actual icon */}
@@ -119,11 +138,11 @@ function CameraForm() {
                     />
                 </div>
                 <div className="form-actions">
-                    <button type="button" onClick={handleReset}>Borrar</button>
-                    <button type="submit">Crear</button>
-                </div>
-            </form>
-        </div>
+                {isEditing && <button type="button" onClick={handleDelete}>Borrar</button>}
+                <button type="submit">{isEditing ? 'Actualizar' : 'Crear'}</button>
+            </div>
+        </form>
+    </div>
     );
 }
 

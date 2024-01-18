@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
-import '../assets/FlujosForm.css'; // Asegúrate de crear este archivo CSS para estilizar tu formulario
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import '../assets/FlujosForm.css';
 
 function FlujosForm() {
-  // Estado inicial del formulario
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isEditing = location.state && location.state.flujos;
+
   const initialState = {
     FECHA: '',
     RANGO_TIEMPO: '',
@@ -13,10 +17,14 @@ function FlujosForm() {
     USUARIO: ''
   };
 
-  // Estado del formulario
   const [flujos, setFlujos] = useState(initialState);
 
-  // Manejar cambios en los inputs
+  useEffect(() => {
+    if (isEditing) {
+      setFlujos(location.state.flujos);
+    }
+  }, [location, isEditing]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFlujos(prevState => ({
@@ -25,25 +33,25 @@ function FlujosForm() {
     }));
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const method = isEditing ? 'PUT' : 'POST';
+    const url = `https://tu-api.com/flujos/${isEditing ? flujos.id : ''}`;
 
     try {
-      const response = await fetch('https://tu-api.com/flujos', { // Reemplaza con la URL de tu API
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
-          // Agrega más cabeceras si es necesario, como tokens de autenticación
         },
         body: JSON.stringify(flujos)
       });
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData); // Procesa la respuesta de la API como necesites
-        // Opcional: resetear el formulario o redireccionar al usuario
+        console.log(responseData);
         setFlujos(initialState);
+        navigate('/flujos-de-trafico');
       } else {
         console.error('Error en la respuesta del servidor:', response.status);
       }
@@ -52,14 +60,35 @@ function FlujosForm() {
     }
   };
 
-  // Manejar la limpieza del formulario
+  const handleDelete = async () => {
+    if (isEditing) {
+      try {
+        const response = await fetch(`https://tu-api.com/flujos/${flujos.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (response.ok) {
+          setFlujos(initialState);
+          navigate('/flujos-de-trafico');
+        } else {
+          console.error('Error en la respuesta del servidor:', response.status);
+        }
+      } catch (error) {
+        console.error('Error al intentar borrar:', error);
+      }
+    }
+  };
+
   const handleReset = () => {
     setFlujos(initialState);
   };
 
   return (
     <div className="flujos-form">
-      <h1>Gestión de Tráfico -Flujos</h1>
+      <h1 className='flujo_text'>Gestion de Trafico - Flujos</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Fecha</label>
@@ -90,12 +119,13 @@ function FlujosForm() {
           <input type="text" name="USUARIO" value={flujos.USUARIO} onChange={handleChange} />
         </div>
         <div className="form-actions">
-          <button type="button" onClick={handleReset}>Borrar</button>
-          <button type="submit">Crear</button>
+          {isEditing && <button type="button" onClick={handleDelete}>Borrar</button>}
+          <button type="submit">{isEditing ? 'Actualizar' : 'Crear'}</button>
         </div>
       </form>
     </div>
   );
 }
+
 
 export default FlujosForm;
