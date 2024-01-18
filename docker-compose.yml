@@ -13,7 +13,7 @@ services:
       - oracle-data:/opt/oracle/oradata
       - ./sql-Oracle/startup:/opt/oracle/scripts/startup
       - ./sql-Oracle/sql:/opt/oracle/scripts/other-scripts
-      - ./execute-sql-scripts.sh:/opt/oracle/scripts/execute-sql-scripts.sh
+      - ./sql-Oracle/execute-sql-scripts.sh:/opt/oracle/scripts/startup/execute-sql-scripts.sh
     healthcheck:
       test: ["CMD", "sqlplus", "-L", "sys/Oracle_123@//localhost:1521/ORCLCDB as sysdba", "SELECT 1 FROM DUAL;"]
       interval: 1m
@@ -26,7 +26,7 @@ services:
   laravel-api:
     build:
       context: ./auth-api
-      dockerfile: Dockerfile # Asegúrate de que este Dockerfile instala OCI8
+      dockerfile: Dockerfile
     ports:
       - "8001:80"
     depends_on:
@@ -40,14 +40,12 @@ services:
       DB_DATABASE: XEPDB1
       DB_USERNAME: jorju
       DB_PASSWORD: 20022002
-      # Otras variables de entorno necesarias
     volumes:
       - ./auth-api:/var/www/html
     restart: on-failure
   
 volumes:
   oracle-data:
-  oracle-scripts:
 
 networks:
   jorge:

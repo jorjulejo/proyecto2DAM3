@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">android-app</string>
+    <string name="pon_tu_email">Pon tu email</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="email">Email</string>
+    <string name="pon_tu_contrase_a">Pon tu contraseña</string>
+    <string name="iniciar_sesi_n">Iniciar sesión</string>
+    <string name="no_tienes_cuenta_aun_registrate">No tienes cuenta aun? Registrate</string>
+    <string name="log_in">Iniciar Sesion</string>
+
+</resources>
