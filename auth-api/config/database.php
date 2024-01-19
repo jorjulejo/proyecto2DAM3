@@ -94,14 +94,12 @@ return [
         ],
         'oracle' => [
             'driver'         => 'oracle',
-            'host'           => env('DB_HOST', ''),
+            'host'           => env('DB_HOST', '127.0.0.1'),
             'port'           => env('DB_PORT', '1521'),
-            'database'       => env('DB_DATABASE', ''),
-            'username'       => env('DB_USERNAME', ''),
-            'password'       => env('DB_PASSWORD', ''),
+            'database'       => env('DB_DATABASE', 'XEPDB1'),
+            'username'       => env('DB_USERNAME', 'jorju'),
+            'password'       => env('DB_PASSWORD', '20022002'),
             'charset'        => env('DB_CHARSET', 'AL32UTF8'),
-            'prefix'         => env('DB_PREFIX', ''),
-            'prefix_schema'  => env('DB_SCHEMA_PREFIX', ''),
         ],
         
 

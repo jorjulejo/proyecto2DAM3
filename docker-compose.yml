@@ -31,8 +31,7 @@ services:
       - "8001:80"
     depends_on:
       - oracle-db
-    networks:
-      - jorge
+    
     environment:
       DB_CONNECTION: oracle
       DB_HOST: oracle-db
@@ -47,6 +46,4 @@ services:
 volumes:
   oracle-data:
 
-networks:
-  jorge:
-    driver: bridge
+
