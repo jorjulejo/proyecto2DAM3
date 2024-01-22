@@ -23,27 +23,16 @@ services:
     shm_size: 2gb
     restart: on-failure
 
-  laravel-api:
-    build:
-      context: ./auth-api
-      dockerfile: Dockerfile
+  spring-boot-app:
+    build: ./Auth-api
     ports:
-      - "8001:80"
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle-db:1521/XEPDB1
+      SPRING_DATASOURCE_USERNAME: jorju
+      SPRING_DATASOURCE_PASSWORD: 20022002
     depends_on:
       - oracle-db
-    
-    environment:
-      DB_CONNECTION: oracle
-      DB_HOST: oracle-db
-      DB_PORT: 1521
-      DB_DATABASE: XEPDB1
-      DB_USERNAME: jorju
-      DB_PASSWORD: 20022002
-    volumes:
-      - ./auth-api:/var/www/html
-    restart: on-failure
-  
+
 volumes:
   oracle-data:
-
-
