@@ -1,4 +1,4 @@
-package com.example.authapi;
+package com.example.Authapi;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.jdbc.core.JdbcTemplate;

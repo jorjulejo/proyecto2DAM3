@@ -6,9 +6,10 @@ import TrafficFlow from './FlujosForm';
 import IncidentMod from './IncidentMod';
 import CameraMod from './CameraMod';
 import FlujosMod from './FlujosMod';
-import '../assets/TrafficManagement.css';
+import '../assets/TrafficManagement.css'; // Asegúrate de que este CSS sea responsivo y consistente
 import NavBar from './NavBar';
 
+// Considera usar React.lazy para la carga perezosa de componentes
 function DynamicForm() {
     const { section, action, id } = useParams();
     const forms = {
@@ -31,23 +32,25 @@ function TrafficManagement() {
     return (
         <Router>
             <div className="traffic-management">
-            <div className="sidebar">
-                    <h1>Inicio</h1>
+                <div className="sidebar">
+                    {/* Mejora la accesibilidad y la consistencia del diseño aquí */}
+                    
                     <ul>
                         <li><NavLink to="/incidencias/modificar" className={({ isActive }) => isActive ? "active" : "inactive"}>Incidencias</NavLink></li>
-                        <li><NavLink to="/camaras/modificar" className={({ isActive }) => isActive ? "active" : "inactive"}>CÃ¡maras</NavLink></li>
-                        <li><NavLink to="/flujo-de-trafico/modificar" className={({ isActive }) => isActive ? "active" : "inactive"}>Flujo de TrÃ¡fico</NavLink></li>
+                        <li><NavLink to="/camaras/modificar" className={({ isActive }) => isActive ? "active" : "inactive"}>Camaras</NavLink></li>
+                        <li><NavLink to="/flujo-de-trafico/modificar" className={({ isActive }) => isActive ? "active" : "inactive"}>Flujo de Trafico</NavLink></li>
                     </ul>
                 </div>
+                
                 <div className="main-content">
-                    <NavBar />
+                <NavBar />
                     <Routes>
                         <Route path="/incidencias" element={<IncidentForm />} />
                         <Route path="/camaras" element={<CameraForm />} />
                         <Route path="/flujo-de-trafico" element={<TrafficFlow />} />
                         <Route path="/:section/:action" element={<DynamicForm />} />
                         <Route path="/:section/:action/:id" element={<DynamicForm />} />
-                        {/* Ruta de bienvenida como antes */}
+                        {/* Considera agregar una ruta de bienvenida aquí */}
                     </Routes>
                 </div>
             </div>

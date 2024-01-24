@@ -1,69 +1,94 @@
-/* FlujosForm.css */
 .flujos-form {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    color: black ;
-  }
-  
-  .flujos-form form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .flujos-form label {
-    margin-bottom: 0;
-    width: 40%;
-  }
-  
-  .flujos-form input[type="text"],
-  .flujos-form input[type="number"],
-  .flujos-form input[type="date"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    flex-grow: 1;
-  }
-  
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  
-  .form-actions button {
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Estilos para el botÃ³n Borrar */
-  .form-actions button[type="button"] {
-    border: 1px solid #ccc;
-    background-color: #fff;
-    color: #333;
-  }
-  
-  /* Estilos para el botÃ³n Crear */
-  .form-actions button[type="submit"] {
-    border: none;
-    background-color: #333;
-    color: #fff;
-  }
-  
-  .form-actions button:hover {
-    opacity: 0.8;
+  margin: 20px auto; /* Centrar el formulario horizontalmente */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  width: 80%; /* Ajustar el ancho según sea necesario */
+  position: relative;
+  top: 25px;
+}
+
+.flujo-text {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #0056b3;
+  font-size: 24px; /* Tamaño de fuente más grande para el título */
+}
+
+.flujos-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.flujos-form label {
+  display: block;
+  margin-bottom: 8px; /* Espacio aumentado entre etiqueta y campo */
+  font-weight: bold;
+  font-size: 18px; /* Tamaño de fuente aumentado para etiquetas */
+}
+
+.flujos-form input[type="text"],
+.flujos-form input[type="number"],
+.flujos-form input[type="date"] {
+  width: calc(100% - 20px); /* Ajustar el ancho para tener en cuenta el padding */
+  padding: 12px; /* Padding aumentado dentro de los inputs */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px; /* Tamaño de fuente aumentado para el texto del input */
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px; /* Tamaño de fuente aumentado para los botones */
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.form-actions button[type="button"] {
+  background-color: #dc3545; /* Color de peligro de Bootstrap */
+  color: white;
+}
+
+.form-actions button[type="submit"] {
+  background-color: #28a745; /* Color de éxito de Bootstrap */
+  color: white;
+}
+
+.form-actions button:hover {
+  opacity: 0.9;
+  transform: scale(1.05); /* Escala ligeramente los botones al pasar el cursor */
+}
+
+@media (max-width: 768px) {
+  .flujos-form {
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
   }
 
-  flujo_text{
-    margin-bottom: 20px;
+  .form-actions {
+    flex-direction: column-reverse; /* Coloca los botones verticalmente en pantallas pequeñas */
   }
-  
+
+  .form-actions button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .form-actions button:first-child {
+    margin-top: 0;
+  }
+}

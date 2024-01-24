@@ -14,7 +14,7 @@ function IncidentForm() {
     carretera: '',
     direccion: '',
     latitud: '',
-    longitud: ''
+    longitud: '',
   };
 
   const [incident, setIncident] = useState(initialState);
@@ -27,9 +27,9 @@ function IncidentForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setIncident(prevState => ({
+    setIncident((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -82,43 +82,86 @@ function IncidentForm() {
 
   return (
     <div className="incident-form">
-
-      <h1 className='incidencia_text'>Gestión de Tráfico - Incidencias</h1>
+      <h1 className='incidencia-text'>Gestion de Trafico - Incidencias</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Tipo</label>
-          <input type="text" name="tipo" value={incident.tipo} onChange={handleChange} />
+          <input
+            type="text"
+            name="tipo"
+            value={incident.tipo}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Causa</label>
-          <input type="text" name="causa" value={incident.causa} onChange={handleChange} />
+          <input
+            type="text"
+            name="causa"
+            value={incident.causa}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Fecha de Comienzo</label>
-          <input type="date" name="fechaComienzo" value={incident.fechaComienzo} onChange={handleChange} />
+          <input
+            type="date"
+            name="fechaComienzo"
+            value={incident.fechaComienzo}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Nivel de Incidencia</label>
-          <input type="text" name="nivelDeIncidencia" value={incident.nivelDeIncidencia} onChange={handleChange} />
+          <input
+            type="text"
+            name="nivelDeIncidencia"
+            value={incident.nivelDeIncidencia}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Carretera</label>
-          <input type="text" name="carretera" value={incident.carretera} onChange={handleChange} />
+          <input
+            type="text"
+            name="carretera"
+            value={incident.carretera}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
-          <label>Dirección</label>
-          <input type="text" name="direccion" value={incident.direccion} onChange={handleChange} />
+          <label>Direccion</label>
+          <input
+            type="text"
+            name="direccion"
+            value={incident.direccion}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Latitud</label>
-          <input type="text" name="latitud" value={incident.latitud} onChange={handleChange} />
+          <input
+            type="text"
+            name="latitud"
+            value={incident.latitud}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-group">
           <label>Longitud</label>
-          <input type="text" name="longitud" value={incident.longitud} onChange={handleChange} />
+          <input
+            type="text"
+            name="longitud"
+            value={incident.longitud}
+            onChange={handleChange}
+          />
         </div>
         <div className="form-actions">
-          {isEditing && <button type="button" onClick={handleDelete}>Borrar</button>}
+          {isEditing && (
+            <button type="button" onClick={handleDelete}>
+              Borrar
+            </button>
+          )}
           <button type="submit">{isEditing ? 'Actualizar' : 'Crear'}</button>
         </div>
       </form>

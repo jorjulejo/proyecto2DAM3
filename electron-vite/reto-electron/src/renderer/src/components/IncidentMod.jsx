@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../assets/IncidentMod.css'; // Asegúrate de que la ruta al archivo CSS es correcta
 
 function IncidentMod() {
     const [incidents, setIncidents] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Cargar datos de la API
         fetch('URL_API_INCIDENTS') // Reemplaza con la URL correcta
             .then(response => response.json())
             .then(data => setIncidents(data))
@@ -14,20 +14,14 @@ function IncidentMod() {
     }, []);
 
     const handleEdit = (incident) => {
-        // Redirecciona al formulario de ediciï¿½n con los datos de la incidencia
         navigate('/incidencias/crear', { state: { incident } });
-    };
-    const incidentmod = {
-        color :'black',
     };
 
     return (
-        
-        <div style={incidentmod}>
+        <div className="incident-mod">
             <h2>Modificar Incidencias</h2>
-            {incidents.map((incident, index) => (
-                <div key={index} onClick={() => handleEdit(incident)}>
-                    {/* Muestra los detalles de la incidencia */}
+            {incidents.map((incident) => (
+                <div key={incident.id} className="incident-item" onClick={() => handleEdit(incident)}>
                     <p>{incident.descripcion}</p>
                 </div>
             ))}

@@ -1,65 +1,99 @@
 .incident-form {
-  margin: 20px;
+  margin: 20px auto; /* Center the form horizontally */
   padding: 20px;
   border: 1px solid #ccc;
-  color: black ;
+  border-radius: 8px;
+  background-color: white;
+  width: 80%; /* Adjust the width as necessary */
+  position: relative;
+  top: 25px;
+
 }
 
-.incident-form form {
-  display: flex;
-  flex-direction: column;
+.incidencia-text {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #0056b3;
+  font-size: 24px; /* Larger font size for the title */
 }
 
 .form-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 20px;
 }
 
-.incident-form label {
-  margin-bottom: 0; /* Eliminar el margen inferior ya que ahora está en .form-group */
-  width: 40%; /* Ajusta este valor según tus necesidades */
+.form-group label {
+  display: block;
+  margin-bottom: 8px; /* Increased space between label and input */
+  font-weight: bold;
+  font-size: 18px; /* Larger font size for labels */
 }
 
 .incident-form input {
-  padding: 10px;
+  width: calc(100% - 20px); /* Adjust width to account for padding */
+  padding: 12px; /* Increased padding inside inputs */
   border: 1px solid #ccc;
   border-radius: 4px;
-  flex-grow: 1; /* Ocupa el espacio restante en .form-group */
+  font-size: 16px; /* Larger font size for input text */
 }
 
 .form-actions {
   display: flex;
-  justify-content: flex-end; /* Alinea los elementos al final del contenedor (derecha) */
-  gap: 10px; /* Añade espacio entre los botones si lo necesitas */
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .form-actions button {
   padding: 10px 20px;
   border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Estilos para el botón Borrar */
-.form-actions button[type="button"] {
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #333;
-}
-
-/* Estilos para el botón Crear */
-.form-actions button[type="submit"] {
   border: none;
-  background-color: #333;
-  color: #fff;
+  cursor: pointer;
+  font-size: 16px; /* Larger font size for buttons */
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.form-actions button[type="button"] {
+  background-color: #dc3545; /* Bootstrap's danger color */
+  color: white;
+}
+
+.form-actions button[type="submit"] {
+  background-color: #28a745; /* Bootstrap's success color */
+  color: white;
 }
 
 .form-actions button:hover {
-  opacity: 0.8;
+  opacity: 0.9;
+  transform: scale(1.05); /* Slightly enlarge buttons on hover */
 }
 
-.incidencia_text{
-  margin-bottom: 10px;
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .incident-form {
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse; /* Stack buttons vertically on smaller screens */
+  }
+
+  .form-actions button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .form-actions button:first-child {
+    margin-top: 0;
+  }
+
+  .form-actions .delete-button {
+    background-color: #dc3545; /* Color de peligro para el bot�n Borrar */
+    color: white;
+  }
+  
+  .form-actions .submit-button {
+    background-color: #28a745; /* Color de �xito para el bot�n Crear/Actualizar */
+    color: white;
+  }
 }

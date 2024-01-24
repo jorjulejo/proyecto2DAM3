@@ -1,0 +1,28 @@
+.camera-mod {
+    margin: 20px;
+    padding: 20px;
+    /* Añade más estilos según tus preferencias */
+}
+
+.camera-mod h2 {
+    text-align: center;
+    color: #0056b3;
+    /* Otros estilos para el título si es necesario */
+}
+
+.camera-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Añade más estilos para hacer que cada elemento se destaque */
+}
+
+.camera-item:hover, .camera-item:focus {
+    background-color: #f0f0f0;
+    /* Otros estilos para el estado hover o focus */
+}
+
+/* Añade más media queries o estilos responsivos si es necesario */

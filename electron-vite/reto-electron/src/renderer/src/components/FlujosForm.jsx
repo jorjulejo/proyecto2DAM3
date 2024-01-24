@@ -5,9 +5,8 @@ import '../assets/FlujosForm.css';
 function FlujosForm() {
   const location = useLocation();
   const navigate = useNavigate();
-  const isEditing = location.state && location.state.flujos;
-
-  const initialState = {
+  const [isEditing, setIsEditing] = useState(false);
+  const [flujos, setFlujos] = useState({
     FECHA: '',
     RANGO_TIEMPO: '',
     MEDIA_VELOCIDAD: '',
@@ -15,26 +14,23 @@ function FlujosForm() {
     LATITUD: '',
     LONGITUD: '',
     USUARIO: ''
-  };
-
-  const [flujos, setFlujos] = useState(initialState);
+  });
 
   useEffect(() => {
-    if (isEditing) {
+    if (location.state?.flujos) {
       setFlujos(location.state.flujos);
+      setIsEditing(true);
     }
-  }, [location, isEditing]);
+  }, [location.state?.flujos]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFlujos(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    setFlujos(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Aqu� puedes agregar validaciones antes de enviar
     const method = isEditing ? 'PUT' : 'POST';
     const url = `https://tu-api.com/flujos/${isEditing ? flujos.id : ''}`;
 
@@ -88,7 +84,7 @@ function FlujosForm() {
 
   return (
     <div className="flujos-form">
-      <h1 className='flujo_text'>Gestion de Trafico - Flujos</h1>
+      <h1 className='flujo-text'>Gestion de Trafico - Flujos</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Fecha</label>
@@ -114,18 +110,19 @@ function FlujosForm() {
           <label>Longitud</label>
           <input type="text" name="LONGITUD" value={flujos.LONGITUD} onChange={handleChange} />
         </div>
-        <div className="form-group">
-          <label>Usuario</label>
-          <input type="text" name="USUARIO" value={flujos.USUARIO} onChange={handleChange} />
-        </div>
         <div className="form-actions">
-          {isEditing && <button type="button" onClick={handleDelete}>Borrar</button>}
-          <button type="submit">{isEditing ? 'Actualizar' : 'Crear'}</button>
+          {isEditing && (
+            <button type="button" className="delete-button" onClick={handleDelete}>
+              Borrar
+            </button>
+          )}
+          <button type="submit" className="submit-button">
+            {isEditing ? 'Actualizar' : 'Crear'}
+          </button>
         </div>
       </form>
     </div>
   );
 }
-
 
 export default FlujosForm;

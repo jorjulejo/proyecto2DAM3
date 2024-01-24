@@ -1,36 +1,76 @@
+/* TrafficManagement.css */
+
+/* Establece variables globales de color, fuente, etc., para mantener la consistencia */
+:root {
+  --primary-color: #0056b3;
+  --secondary-color: #e9ecef;
+  --font-family: 'Arial', sans-serif;
+  --text-color: #333;
+  --active-color: #007bff;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  background-color: var(--secondary-color);
+}
+
 .traffic-management {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .sidebar {
-  width: 150px;
-  background-color: #f0f0f0;
+  width: 200px;
+  background-color: var(--primary-color);
+  color: white;
   padding: 20px;
-  color: black;
+  box-sizing: border-box;
+}
+
+.sidebar h1 {
+  margin-top: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+  background-color: var(--active-color);
 }
 
 .main-content {
   flex-grow: 1;
-  background-color: white;
-}
-
-.main-content header {
-  display: flex;
-  justify-content: space-between;
   padding: 20px;
-  background-color: #e8e8e8;
+  padding: 0; /* Set the top padding to 0 */
+  background-color: var(--secondary-color);
+  box-sizing: border-box;
 }
 
-.welcome {
-  padding: 20px;
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .sidebar {
+      width: 100%;
+      padding: 10px;
+  }
+
+  .main-content {
+      padding: 10px;
+  }
 }
 
-.active{
-  color: blue;
-}
-.inactive{
-  color: black;
-}
-
-
+/* Añade estilos adicionales para componentes específicos, animaciones, transiciones, etc. */

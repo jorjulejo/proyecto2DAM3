@@ -1,52 +1,59 @@
-/* CameraForm.css */
 .camera-form {
-  margin: 20px;
+  margin: 20px auto; /* Centrar el formulario horizontalmente */
   padding: 20px;
   border: 1px solid #ccc;
-  color: black ;
-
+  border-radius: 8px;
+  background-color: white;
+  width: 80%; /* Ajustar el ancho seg�n sea necesario */
+  position: relative;
+  top: 25px;
 }
 
-.camera-form .form-group {
+.camera-text {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #0056b3;
+  font-size: 24px; /* Tama�o de fuente m�s grande para el t�tulo */
+}
+
+.form-group {
   margin-bottom: 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* Para m�viles y consistencia */
 }
 
 .camera-form label {
-  margin-bottom: 0;
-  width: 40%;
+  margin-bottom: 8px; /* Espacio aumentado entre etiqueta y campo */
+  font-weight: bold;
+  font-size: 18px; /* Tama�o de fuente aumentado para etiquetas */
 }
 
-.camera-form input {
-  padding: 10px;
+.camera-form input[type="text"],
+.camera-form input[type="number"],
+.camera-form input[type="date"],
+.camera-form input[type="file"] {
+  width: calc(100% - 20px); /* Ajustar el ancho para tener en cuenta el padding */
+  padding: 12px; /* Padding aumentado dentro de los inputs */
   border: 1px solid #ccc;
   border-radius: 4px;
-  flex-grow: 1;
+  font-size: 16px; /* Tama�o de fuente aumentado para el texto del input */
 }
 
-.camera-form .file-input-group {
+.file-input-group {
   position: relative;
 }
 
-.camera-form .file-input-group label {
-  width: fit-content;
-}
-
-.camera-form .file-upload-icon {
+.file-upload-icon {
   position: absolute;
   right: 10px;
-  top: 50%;
+  top: 50px;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 24px;
 }
-.input-wrapper{
-  width: max-content;
-}
-.camera-form input[type="file"] {
-  display: none;
+
+.input-wrapper {
+  width: 100%;
 }
 
 .camera-form .form-actions {
@@ -55,33 +62,48 @@
   gap: 10px;
 }
 
-.camera-form .form-actions button {
+.camera-form .form-actions .delete-button,
+.camera-form .form-actions .submit-button {
   padding: 10px 20px;
   border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.camera-form .form-actions button[type="button"] {
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #333;
-}
-
-.camera-form .form-actions button[type="submit"] {
   border: none;
-  background-color: #333;
-  color: #fff;
+  cursor: pointer;
+  font-size: 16px; /* Tama�o de fuente aumentado para botones */
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.camera-form .form-actions .delete-button {
+  background-color: #dc3545; /* Color de peligro de Bootstrap */
+  color: white;
+}
+
+.camera-form .form-actions .submit-button {
+  background-color: #28a745; /* Color de �xito de Bootstrap */
+  color: white;
 }
 
 .camera-form .form-actions button:hover {
-  opacity: 0.8;
+  opacity: 0.9;
+  transform: scale(1.05); /* Escala ligeramente los botones al pasar el cursor */
 }
 
-input#urlImagen {
-  width: 345px;
-}
+@media (max-width: 768px) {
+  .camera-form {
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
+  }
 
-.camara_text{
-margin-bottom: 20px;
+  .camera-form .form-actions {
+    flex-direction: column-reverse; /* Coloca los botones verticalmente en pantallas peque�as */
+  }
+
+  .camera-form .form-actions button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .camera-form .form-actions button:first-child {
+    margin-top: 0;
+  }
 }

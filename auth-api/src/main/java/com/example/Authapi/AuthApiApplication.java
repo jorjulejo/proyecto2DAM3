@@ -1,4 +1,4 @@
-package com.example.authapi; // Todo en minúsculas para seguir las convenciones y coincidir con la estructura de carpetas
+package com.example.Authapi; // Todo en minúsculas para seguir las convenciones y coincidir con la estructura de carpetas
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../assets/CameraMod.css'; // Asegúrate de que la ruta al archivo CSS es correcta
 
 function CameraMod() {
     const [cameras, setCameras] = useState([]);
@@ -18,15 +19,11 @@ function CameraMod() {
         navigate('/camaras/editar', { state: { camera } });
     };
 
-    const cameramod = {
-        color :'black',
-    };
-
     return (
-        <div style={cameramod}>
+        <div className="camera-mod">
             <h2>Modificar Camaras</h2>
-            {cameras.map((camera, index) => (
-                <div key={index} onClick={() => handleEdit(camera)}>
+            {cameras.map((camera) => (
+                <div key={camera.id} className="camera-item" onClick={() => handleEdit(camera)}>
                     {/* Muestra los detalles de la cámara */}
                     <p>{camera.nombre}</p>
                 </div>

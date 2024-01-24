@@ -51,12 +51,12 @@ function CameraForm() {
         const method = isEditing ? 'PUT' : 'POST';
         const url = `https://tu-api.com/camaras/${isEditing ? camera.id : ''}`;
 
-        // ...manejo de la petici�n a la API
+        // ...manejo de la petici�n a la API
     };
 
     const handleDelete = async () => {
         if (isEditing) {
-            // ...manejo de la petici�n DELETE a la API
+            // ...manejo de la petici�n DELETE a la API
         }
     };
 
@@ -66,7 +66,7 @@ function CameraForm() {
 
     return (
         <div className="camera-form">
-            <h1 className='camara_text'>Gestión de Tráfico - Cámaras</h1>
+            <h1 className='camera-text'>Gestion de Trafico - Camaras</h1>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Nombre</label>
@@ -89,7 +89,7 @@ function CameraForm() {
 
                         />
                         <label htmlFor="archivoImagen" className="file-upload-icon">
-                            📷 {/* Replace with an actual icon */}
+                            📷 
                         </label>
                     </div>
                     <input
@@ -138,12 +138,17 @@ function CameraForm() {
                     />
                 </div>
                 <div className="form-actions">
-                {isEditing && <button type="button" onClick={handleDelete}>Borrar</button>}
-                <button type="submit">{isEditing ? 'Actualizar' : 'Crear'}</button>
-            </div>
-        </form>
-    </div>
+                    {isEditing && (
+                        <button type="button" className="delete-button" onClick={handleDelete}>
+                            Borrar
+                        </button>
+                    )}
+                    <button type="submit" className="submit-button">
+                        {isEditing ? 'Actualizar' : 'Crear'}
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }
-
 export default CameraForm;
