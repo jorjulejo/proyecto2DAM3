@@ -18,33 +18,33 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
-    }
+	public SecurityConfig(UserDetailsService userDetailsService) {
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+	@Autowired
+	private JwtRequestFilter jwtRequestFilter;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(authorize -> authorize
-                 // Permitir acceso sin autenticación
-                .anyRequest().permitAll());
-            //.httpBasic(Customizer.withDefaults()); // Configurar autenticación HTTP básica
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        // Agregar JwtRequestFilter antes de UsernamePasswordAuthenticationFilter
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http.authorizeHttpRequests(
+				authz -> authz.requestMatchers("/usuarios/registro").permitAll().anyRequest().authenticated()).csrf()
+				.disable().httpBasic(Customizer.withDefaults()); // Configurar autenticación HTTP básica
 
-        return http.build();
-    }
+		// Agregar JwtRequestFilter antes de UsernamePasswordAuthenticationFilter
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+		return http.build();
+	}
+
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 }

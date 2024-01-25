@@ -12,8 +12,8 @@ public class UsuarioControlador {
     private UsuarioServicio usuarioServicio;
 
     @PostMapping("/registro")
-    public ResponseEntity<Usuario> registrarUsuario(@RequestBody Usuario usuario) {
-        Usuario usuarioRegistrado = usuarioServicio.registrar(usuario);
+    public ResponseEntity<Usuarios> registrarUsuario(@RequestBody Usuarios usuario) {
+        Usuarios usuarioRegistrado = usuarioServicio.registrar(usuario);
         return ResponseEntity.ok(usuarioRegistrado);
     }
 }

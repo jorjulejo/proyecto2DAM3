@@ -13,7 +13,7 @@ public class UsuarioServicio {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Usuario registrar(Usuario usuario) {
+    public Usuarios registrar(Usuarios usuario) {
         usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         return usuarioRepositorio.save(usuario);
     }

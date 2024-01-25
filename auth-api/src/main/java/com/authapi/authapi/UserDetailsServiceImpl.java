@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	public UserDetails loadUserByUsername(String username) {
         // Buscar el usuario en la base de datos por su email (username)
-        Usuario usuario = usuarioRepositorio.findByEmail(username);
+        Usuarios usuario = usuarioRepositorio.findByEmail(username);
 
         if (usuario == null) {
             throw new UsernameNotFoundException("Usuario no encontrado: " + username);
