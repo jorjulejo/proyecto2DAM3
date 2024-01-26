@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Esperar a que la base de datos est� completamente lista (ajustar seg�n sea necesario)
+
 sleep 60
 
 # Conectar a la base de datos y ejecutar cada script SQL, excepto crear-usuario.sql

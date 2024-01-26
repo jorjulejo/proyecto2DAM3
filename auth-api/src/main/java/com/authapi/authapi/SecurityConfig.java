@@ -27,7 +27,7 @@ public class SecurityConfig {
 	}
 
 	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
+	//private JwtRequestFilter jwtRequestFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,7 +37,7 @@ public class SecurityConfig {
 				.disable().httpBasic(Customizer.withDefaults()); // Configurar autenticación HTTP básica
 
 		// Agregar JwtRequestFilter antes de UsernamePasswordAuthenticationFilter
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		//http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

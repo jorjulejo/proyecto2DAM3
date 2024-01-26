@@ -9,7 +9,7 @@ public class Usuarios {
     private String email;
     private String contrasena;
     private String token;
-    private String snAdmin;
+    private String sn_admin;
     
     
     
@@ -32,10 +32,10 @@ public class Usuarios {
 		this.token = token;
 	}
 	public String getSnAdmin() {
-		return snAdmin;
+		return sn_admin;
 	}
 	public void setSnAdmin(String snAdmin) {
-		this.snAdmin = snAdmin;
+		this.sn_admin = snAdmin;
 	}
     
     
