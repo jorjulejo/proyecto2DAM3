@@ -19,9 +19,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_flujos AS
         VALUES (
             JSON_VALUE(p_json_flujo, '$.id'),
             TO_DATE(JSON_VALUE(p_json_flujo, '$.fecha'), 'YYYY-MM-DD'),
-            JSON_VALUE(p_json_flujo, '$.rango_tiempo', 'NUMBER'),
-            JSON_VALUE(p_json_flujo, '$.media_velocidad', 'NUMBER'),
-            JSON_VALUE(p_json_flujo, '$.total_vehiculos', 'NUMBER'),
+            JSON_VALUE(p_json_flujo, '$.rango_tiempo'),
+            TO_NUMBER(JSON_VALUE(p_json_flujo, '$.media_velocidad')),
+            TO_NUMBER(JSON_VALUE(p_json_flujo, '$.total_vehiculos')),
             JSON_VALUE(p_json_flujo, '$.latitud'),
             JSON_VALUE(p_json_flujo, '$.longitud'),
             JSON_VALUE(p_json_flujo, '$.usuario')
@@ -32,9 +32,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_flujos AS
     BEGIN
         UPDATE FLUJOS SET
             FECHA = TO_DATE(JSON_VALUE(p_json_flujo, '$.fecha'), 'YYYY-MM-DD'),
-            RANGO_TIEMPO = JSON_VALUE(p_json_flujo, '$.rango_tiempo', 'NUMBER'),
-            MEDIA_VELOCIDAD = JSON_VALUE(p_json_flujo, '$.media_velocidad', 'NUMBER'),
-            TOTAL_VEHICULOS = JSON_VALUE(p_json_flujo, '$.total_vehiculos', 'NUMBER'),
+            RANGO_TIEMPO = TO_NUMBER(JSON_VALUE(p_json_flujo, '$.rango_tiempo')),
+            MEDIA_VELOCIDAD = TO_NUMBER(JSON_VALUE(p_json_flujo, '$.media_velocidad')),
+            TOTAL_VEHICULOS = TO_NUMBER(JSON_VALUE(p_json_flujo, '$.total_vehiculos')),
             LATITUD = JSON_VALUE(p_json_flujo, '$.latitud'),
             LONGITUD = JSON_VALUE(p_json_flujo, '$.longitud'),
             USUARIO = JSON_VALUE(p_json_flujo, '$.usuario')

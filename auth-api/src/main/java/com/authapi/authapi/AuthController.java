@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,10 +30,10 @@ public class AuthController {
             );
 
             // Si la autenticación es exitosa, se obtiene el UserDetails
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+            Usuarios usuario = userDetailsService.loadUserByUsername(request.getUsername());
 
             // Generar el token JWT
-            final String jwt = jwtUtil.generateToken(userDetails);
+            final String jwt = jwtUtil.generateToken(usuario);
 
             // Devolver el token como respuesta
             return ResponseEntity.ok(new AuthenticationResponse(jwt));

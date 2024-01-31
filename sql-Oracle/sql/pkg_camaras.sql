@@ -22,7 +22,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_camaras AS
             JSON_VALUE(p_json_camara, '$.latitud'),
             JSON_VALUE(p_json_camara, '$.longitud'),
             JSON_VALUE(p_json_camara, '$.carretera'),
-            JSON_VALUE(p_json_camara, '$.kilometro', 'NUMBER'),
+            TO_NUMBER(JSON_VALUE(p_json_camara, '$.kilometro')),
             JSON_VALUE(p_json_camara, '$.imagen'),
             JSON_VALUE(p_json_camara, '$.usuario')
         );
@@ -36,7 +36,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_camaras AS
             LATITUD = JSON_VALUE(p_json_camara, '$.latitud'),
             LONGITUD = JSON_VALUE(p_json_camara, '$.longitud'),
             CARRETERA = JSON_VALUE(p_json_camara, '$.carretera'),
-            KILOMETRO = JSON_VALUE(p_json_camara, '$.kilometro', 'NUMBER'),
+            KILOMETRO = TO_NUMBER(JSON_VALUE(p_json_camara, '$.kilometro')),
             IMAGEN = JSON_VALUE(p_json_camara, '$.imagen'),
             USUARIO = JSON_VALUE(p_json_camara, '$.usuario')
         WHERE ID = JSON_VALUE(p_json_camara, '$.id');
