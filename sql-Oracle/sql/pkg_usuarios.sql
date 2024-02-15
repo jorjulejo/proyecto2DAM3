@@ -1,5 +1,4 @@
-
-CREATE OR REPLACE PACKAGE pkg_usuarios AS
+create or replace PACKAGE pkg_usuarios AS
     PROCEDURE insertar_usuario(p_json_usuario IN CLOB);
 -------------------------------------------------------------------
     PROCEDURE actualizar_usuario(p_json_usuario IN CLOB);
@@ -8,7 +7,10 @@ CREATE OR REPLACE PACKAGE pkg_usuarios AS
 -------------------------------------------------------------------
     FUNCTION seleccionar_usuarios RETURN CLOB;
 -------------------------------------------------------------------
-    FUNCTION seleccionar_usuario(p_email IN VARCHAR2) RETURN CLOB;
+    FUNCTION seleccionar_usuario(p_email IN CLOB) RETURN CLOB;
+----------------------------------------------------------------------
+    FUNCTION seleccionar_admin(p_email IN CLOB) RETURN CLOB;
+    
 END pkg_usuarios;
 /
 
@@ -21,8 +23,7 @@ create or replace PACKAGE BODY pkg_usuarios AS
             JSON_VALUE(p_json_usuario, '$.email'),
             JSON_VALUE(p_json_usuario, '$.contrasena'),
             JSON_VALUE(p_json_usuario, '$.token'),
-            JSON_VALUE(p_json_usuario, '$.snAdmin')
-        );
+            JSON_VALUE(p_json_usuario, '$.snAdmin'));
     END;
 -------------------------------------------------------------------
     PROCEDURE actualizar_usuario(p_json_usuario IN CLOB) IS
@@ -62,9 +63,11 @@ create or replace PACKAGE BODY pkg_usuarios AS
         RETURN v_resultado;
     END;
 -------------------------------------------------------------------
-    FUNCTION seleccionar_usuario(p_email IN VARCHAR2) RETURN CLOB IS
+    FUNCTION seleccionar_usuario(p_email IN CLOB) RETURN CLOB IS
             v_resultado CLOB;
+            v_email VARCHAR2(100);
         BEGIN
+        v_email := JSON_VALUE(p_email, '$.email');
             SELECT JSON_OBJECT(
                     'email' VALUE EMAIL,
                     'contrasena' VALUE CONTRASENA,
@@ -72,9 +75,25 @@ create or replace PACKAGE BODY pkg_usuarios AS
                     'snAdmin' VALUE SN_ADMIN
                 ) INTO v_resultado
             FROM USUARIOS
-            WHERE EMAIL = p_email;
+            WHERE EMAIL = v_email;
 
             RETURN v_resultado;
         END;
+        
+ -------------------------------------------------------------------
+    FUNCTION seleccionar_admin(p_email IN CLOB) RETURN CLOB IS
+            v_resultado CLOB;
+            v_email VARCHAR2(100);
+        BEGIN
+        v_email := JSON_VALUE(p_email, '$.email');
+            SELECT JSON_OBJECT(
+                    'snAdmin' VALUE SN_ADMIN
+                ) INTO v_resultado
+            FROM USUARIOS
+            WHERE EMAIL = v_email;
+
+            RETURN v_resultado;
+        END;
+--------------------------------------------------------------------------
 END pkg_usuarios;
 /

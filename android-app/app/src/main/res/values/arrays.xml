@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="tipo_opciones">
+        <item>Incidencias</item>
+        <item>Cámaras</item>
+        <item>Flujos</item>
+    </string-array>
+</resources>
+
+

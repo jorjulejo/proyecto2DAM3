@@ -18,6 +18,19 @@ public class FlujoControlador {
         JsonArray resultado = FlujoServicio.seleccionarFlujos();
         return ResponseEntity.ok(resultado);
     }
+    @PostMapping("/seleccionarByUsename")
+    public ResponseEntity<?> seleccionarFlujosByUsername(@RequestBody String jsonIncidencia) {
+        // Aquí deberías validar el token JWT
+        JsonArray resultado = FlujoServicio.seleccionarFlujosByUsername(jsonIncidencia);
+        return ResponseEntity.ok(resultado);
+    }
+    
+    @PostMapping("/seleccionarById")
+    public ResponseEntity<?> seleccionarFlujosById(@RequestBody String jsonIncidencia) {
+        // Aquí deberías validar el token JWT
+        JsonArray resultado = FlujoServicio.seleccionarFlujosbyId(jsonIncidencia);
+        return ResponseEntity.ok(resultado);
+    }
 
     @PostMapping("/insertar")
     public ResponseEntity<?> insertarIncidencia(@RequestBody String jsonFlujo) {

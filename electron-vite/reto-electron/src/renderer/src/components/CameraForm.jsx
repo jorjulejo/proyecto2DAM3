@@ -2,26 +2,52 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../assets/CameraForm.css';
+import useToken from '../Store/useStore'; // Importa el store
 
 function CameraForm() {
     const location = useLocation();
     const isEditing = location.state && location.state.camera;
+    const { token } = useToken();
+
+    function transformCameraData(cameraData) {
+        const transformedData = {};
+        for (const key in cameraData) {
+            if (
+                cameraData[key] &&
+                typeof cameraData[key] === 'object' &&
+                'string' in cameraData[key]
+            ) {
+                transformedData[key] = cameraData[key].string;
+            } else if (
+                cameraData[key] &&
+                typeof cameraData[key] === 'object' &&
+                !('string' in cameraData[key])
+            ) {
+                transformedData[key] = ''; // Si es un objeto sin propiedad 'string', establece el campo como una cadena vacía
+            } else {
+                transformedData[key] = cameraData[key];
+            }
+        }
+        return transformedData;
+    }
 
     const initialState = {
         nombre: '',
-        urlImagen: '',
-        archivoImagen: null,
+        url: '', // Cambiado de urlImagen
+        imagen: null, // Cambiado de archivoImagen
         latitud: '',
         longitud: '',
         carretera: '',
         kilometro: '',
+        usuario: 'ikbdt@plaiaundi.net' // Agregar si es necesario
     };
-
     const [camera, setCamera] = useState(initialState);
 
     useEffect(() => {
-        if (isEditing) {
-            setCamera(location.state.camera);
+        if (isEditing && location.state.camera) {
+            const transformedCamera = transformCameraData(location.state.camera);
+            // Establece el estado con los datos transformados y formateados
+            setCamera(transformedCamera);
         }
     }, [location, isEditing]);
 
@@ -37,31 +63,85 @@ function CameraForm() {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setCamera(prevState => ({
-                ...prevState,
-                archivoImagen: file,
-                urlImagen: file.name
-            }));
+            // Convertir el archivo a Base64 para el campo imagen
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+                setCamera(prevState => ({
+                    ...prevState,
+                    imagen: reader.result,
+                    url: file.name
+                }));
+            };
         }
     };
 
 
+    const rutaActualizar = 'actualizar'; // Reemplaza con tu ruta real para actualizar
+    const rutaInsertar = 'insertar';
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const method = isEditing ? 'PUT' : 'POST';
-        const url = `https://tu-api.com/camaras/${isEditing ? camera.id : ''}`;
 
-        // ...manejo de la petici�n a la API
+        // Validación para asegurarse de que todos los campos relevantes están completos
+        const camposRequeridos = ['nombre', 'url', 'latitud', 'longitud', 'carretera', 'kilometro'];
+        // Incluye 'imagen' en camposRequeridos si es obligatorio cargar una imagen al crear o actualizar una cámara
+        const camposIncompletos = camposRequeridos.some(campo => !camera[campo]);
+
+        if (camposIncompletos) {
+            alert('Por favor, completa todos los campos antes de enviar.');
+            return; // Detiene la función si hay campos incompletos
+        }
+
+        const method = isEditing ? 'PUT' : 'POST';
+        const url = `http://127.0.0.1:8080/api/camaras/${isEditing ? rutaActualizar : rutaInsertar}`;
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Asegúrate de que el token es correcto
+                },
+                body: JSON.stringify(camera)
+            });
+
+            if (response.ok) {
+                // Procesar respuesta
+                if (!isEditing)
+                    setCamera(initialState);
+            } else {
+                console.error('Error en la respuesta del servidor:', response.status);
+            }
+        } catch (error) {
+            console.error('Error al enviar el formulario:', error);
+        }
     };
+
 
     const handleDelete = async () => {
         if (isEditing) {
-            // ...manejo de la petici�n DELETE a la API
-        }
-    };
+            try {
+                const deleteData = { id: camera.id }; // Crear el objeto JSON con el campo "id"
 
-    const handleReset = () => {
-        setCamera(initialState);
+                const response = await fetch(`http://127.0.0.1:8080/api/camaras/borrar`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(deleteData) // Convertir el objeto JSON a una cadena JSON
+                });
+
+                if (response.ok) {
+                    // Procesar respuesta
+                    setCamera(initialState);
+                } else {
+                    console.error('Error en la respuesta del servidor:', response.status);
+                }
+            } catch (error) {
+                console.error('Error al intentar borrar:', error);
+            }
+        }
     };
 
     return (
@@ -78,24 +158,24 @@ function CameraForm() {
                     />
                 </div>
                 <div className="form-group file-input-group">
-                    <label htmlFor="urlImagen">Imagen</label>
+                    <label htmlFor="url">Imagen</label>
                     <div className="input-wrapper">
                         <input
-                            id="urlImagen"
+                            id="url"
                             type="text"
-                            name="urlImagen"
-                            value={camera.urlImagen}
+                            name="url"
+                            value={camera.url}
                             onChange={handleChange}
 
                         />
-                        <label htmlFor="archivoImagen" className="file-upload-icon">
-                            📷 
+                        <label htmlFor="imagen" className="file-upload-icon">
+                            📷
                         </label>
                     </div>
                     <input
-                        id="archivoImagen"
+                        id="imagen"
                         type="file"
-                        name="archivoImagen"
+                        name="imagen"
                         accept="image/*"
                         onChange={handleFileChange}
                         style={{ display: 'none' }}
@@ -131,7 +211,7 @@ function CameraForm() {
                 <div className="form-group">
                     <label>Kilómetro</label>
                     <input
-                        type="number"
+                        type="text"
                         name="kilometro"
                         value={camera.kilometro}
                         onChange={handleChange}

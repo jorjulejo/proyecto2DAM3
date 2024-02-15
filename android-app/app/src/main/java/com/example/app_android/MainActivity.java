@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             final String email = emailEditText.getText().toString();
             final String password = passwordEditText.getText().toString();
 
+
             // Validar que email y password no estén vacíos
             if(email.isEmpty() || password.isEmpty()) {
                 showAlert("Error", "Email y password son requeridos");
@@ -80,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
                     final String responseBody = response.body().string();
                     if (response.isSuccessful()) {
                         // Mostrar el pop-up de inicio de sesión exitoso
+                        Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
+                        intent.putExtra("token", responseBody);
+                        intent.putExtra("usuario", email);
+                        startActivity(intent);
+
                         //responseBody
                     } else {
                         // Mostrar el error

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edtFechaFlujo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha (yyyy-MM-dd)"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/edtRangoTiempoFlujo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Rango de Tiempo (minutos)"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edtMediaVelocidadFlujo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Media de Velocidad (km/h)"
+        android:inputType="numberDecimal"/>
+
+    <EditText
+        android:id="@+id/edtTotalVehiculosFlujo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Total de Vehículos"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edtLatitudFlujo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Latitud"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtLongitudFlujo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Longitud"
+        android:inputType="text"/>
+
+
+</LinearLayout>

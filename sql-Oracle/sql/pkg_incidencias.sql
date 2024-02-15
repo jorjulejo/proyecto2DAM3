@@ -7,11 +7,16 @@ CREATE OR REPLACE PACKAGE pkg_incidencias AS
 -------------------------------------------------------------------
     PROCEDURE borrar_incidencia(p_json_incidencia IN CLOB);
 -------------------------------------------------------------------
+    FUNCTION seleccionar_incidencias_byUsername(p_usuario IN CLOB) RETURN CLOB;
+-------------------------------------------------------------------
+    FUNCTION seleccionar_incidencias_byId(p_id IN CLOB) RETURN CLOB;
+-------------------------------------------------------------------
+
     
 END pkg_incidencias;
 /
 
-CREATE OR REPLACE PACKAGE BODY pkg_incidencias AS
+create or replace PACKAGE BODY pkg_incidencias AS
 
     PROCEDURE insertar_incidencia(p_json_incidencia IN CLOB) IS
     BEGIN
@@ -35,7 +40,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_incidencias AS
     BEGIN
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
-                'id' VALUE ID,
+                'id' VALUE to_char(ID),
                 'tipo' VALUE TIPO,
                 'causa' VALUE CAUSA,
                 'comienzo' VALUE TO_CHAR(COMIENZO, 'YYYY-MM-DD'),
@@ -48,10 +53,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_incidencias AS
             )
         ) INTO v_resultado
         FROM INCIDENCIAS;
-        
+
         RETURN v_resultado;
     END;
--------------------------------------------------------------------    
+-------------------------------------------------------------------
     PROCEDURE actualizar_incidencia(p_json_incidencia IN CLOB) IS
     BEGIN
         UPDATE INCIDENCIAS SET
@@ -73,6 +78,60 @@ CREATE OR REPLACE PACKAGE BODY pkg_incidencias AS
         WHERE ID = JSON_VALUE(p_json_incidencia, '$.id');
     END;
 
+-------------------------------------------------------------------
+
+FUNCTION seleccionar_incidencias_byUsername(p_usuario IN CLOB) RETURN CLOB IS
+    v_usuario VARCHAR2(100);
+    v_resultado CLOB;
+
+BEGIN
+    v_usuario := JSON_VALUE(p_usuario, '$.usuario');
+    SELECT JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'id' VALUE to_char(ID),
+            'tipo' VALUE TIPO,
+            'causa' VALUE CAUSA,
+            'comienzo' VALUE TO_CHAR(COMIENZO, 'YYYY-MM-DD'),
+            'nivel_incidencia' VALUE NVL_INCIDENCIA,
+            'carretera' VALUE CARRETERA,
+            'direccion' VALUE DIRECCION,
+            'latitud' VALUE LATITUD,
+            'longitud' VALUE LONGITUD,
+            'usuario' VALUE USUARIO
+        )
+    ) INTO v_resultado
+    FROM INCIDENCIAS
+    WHERE USUARIO = v_usuario;
+
+    RETURN v_resultado;
+END;
+-------------------------------------------------------------------
+FUNCTION seleccionar_incidencias_byId(p_id IN CLOB) RETURN CLOB IS
+    v_id VARCHAR2(100);
+    v_resultado CLOB;
+
+BEGIN
+    v_id := JSON_VALUE(p_id, '$.id');
+    SELECT JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'id' VALUE to_char(ID),
+            'tipo' VALUE TIPO,
+            'causa' VALUE CAUSA,
+            'comienzo' VALUE TO_CHAR(COMIENZO, 'YYYY-MM-DD'),
+            'nivel_incidencia' VALUE NVL_INCIDENCIA,
+            'carretera' VALUE CARRETERA,
+            'direccion' VALUE DIRECCION,
+            'latitud' VALUE LATITUD,
+            'longitud' VALUE LONGITUD,
+            'usuario' VALUE USUARIO
+        )
+    ) INTO v_resultado
+    FROM INCIDENCIAS
+    WHERE to_char(ID) = v_id;
+
+    RETURN v_resultado;
+END;
+-------------------------------------------------------------------
 
 END pkg_incidencias;
 /

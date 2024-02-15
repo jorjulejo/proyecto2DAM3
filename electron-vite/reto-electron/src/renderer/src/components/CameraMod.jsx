@@ -1,33 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/CameraMod.css'; // Asegúrate de que la ruta al archivo CSS es correcta
+import '../assets/CameraMod.css'; // AsegÃºrate de que la ruta al archivo CSS es correcta
+import useToken from '../Store/useStore'; // Importa el store
 
 function CameraMod() {
     const [cameras, setCameras] = useState([]);
     const navigate = useNavigate();
+    const { token } = useToken();
 
     useEffect(() => {
-        // Cargar datos de la API
-        fetch('URL_API_CAMARAS') // Reemplaza con la URL correcta
-            .then(response => response.json())
-            .then(data => setCameras(data))
-            .catch(error => console.error('Error:', error));
-    }, []);
+        const fetchCamaras = async () => {
+            try {
+                const headers = {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                };
+
+                const response = await fetch('http://127.0.0.1:8080/api/camaras/seleccionar', { headers });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log(data);
+                setCameras(data); // Asumiendo que la API devuelve un array de cÃ¡maras
+            } catch (error) {
+                console.error('Error fetching cameras:', error);
+            }
+        };
+    
+        fetchCamaras();
+    }, [token]);
 
     const handleEdit = (camera) => {
-        // Redirecciona al formulario de edición con los datos de la cámara
-        navigate('/camaras/editar', { state: { camera } });
+        navigate('/camaras/crear', { state: { camera } });
     };
 
     return (
         <div className="camera-mod">
             <h2>Modificar Camaras</h2>
-            {cameras.map((camera) => (
-                <div key={camera.id} className="camera-item" onClick={() => handleEdit(camera)}>
-                    {/* Muestra los detalles de la cámara */}
-                    <p>{camera.nombre}</p>
+            {cameras.length > 0 ? cameras.map((camera) => (
+                <div key={camera.id.string} className="camera-item" onClick={() => handleEdit(camera)}>
+                    <p>{camera.nombre.string}</p>
+                    <p>{camera.longitud.string}</p>
+                    <p>{camera.carretera.string}</p>
+                    <p>{camera.kilometro.string}</p>
                 </div>
-            ))}
+            )) : <p>No hay cÃ¡maras para mostrar.</p>}
         </div>
     );
 }

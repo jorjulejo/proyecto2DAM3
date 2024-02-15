@@ -18,23 +18,43 @@ public class CamaraControlador {
         JsonArray resultado = CamaraServicio.seleccionarCamaras();
         return ResponseEntity.ok(resultado);
     }
+    @PostMapping("/seleccionarByUsename")
+    public ResponseEntity<?> seleccionarCamarasByUsername(@RequestBody String jsonIncidencia) {
+        // Aquí deberías validar el token JWT
+        JsonArray resultado = CamaraServicio.seleccionarCamarasByUsername(jsonIncidencia);
+        return ResponseEntity.ok(resultado);
+    }
+    
+    @PostMapping("/seleccionarById")
+    public ResponseEntity<?> seleccionarCamarasById(@RequestBody String jsonIncidencia) {
+        // Aquí deberías validar el token JWT
+        JsonArray resultado = CamaraServicio.seleccionarCamarasbyId(jsonIncidencia);
+        return ResponseEntity.ok(resultado);
+    }
+    
+    @PostMapping("/seleccionarImagen")
+    public ResponseEntity<?> seleccionarImagen(@RequestBody String jsonIncidencia) {
+        // Aquí deberías validar el token JWT
+        JsonArray resultado = CamaraServicio.seleccionarImagenbyId(jsonIncidencia);
+        return ResponseEntity.ok(resultado);
+    }
 
     @PostMapping("/insertar")
-    public ResponseEntity<?> insertarIncidencia(@RequestBody String jsonCamara) {
+    public ResponseEntity<?> insertarCamara(@RequestBody String jsonCamara) {
         // Aquí deberías validar el token JWT
         CamaraServicio.insertarCamara(jsonCamara);
         return ResponseEntity.ok("Incidencia insertada con éxito");
     }
 
     @PutMapping("/actualizar")
-    public ResponseEntity<?> actualizarIncidencia(@RequestBody String jsonCamara) {
+    public ResponseEntity<?> actualizarCamara(@RequestBody String jsonCamara) {
         // Aquí deberías validar el token JWT
         CamaraServicio.actualizarCamara(jsonCamara);
         return ResponseEntity.ok("Incidencia actualizada con éxito");
     }
 
     @DeleteMapping("/borrar")
-    public ResponseEntity<?> borrarIncidencia(@RequestBody String jsonCamara) {
+    public ResponseEntity<?> borrarCamara(@RequestBody String jsonCamara) {
         // Aquí deberías validar el token JWT
         CamaraServicio.borrarCamara(jsonCamara);
         return ResponseEntity.ok("Incidencia borrada con éxito");

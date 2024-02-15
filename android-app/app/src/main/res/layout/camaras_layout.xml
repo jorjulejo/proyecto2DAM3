@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edtNombreCamara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtUrlCamara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="URL"
+        android:inputType="textUri"/>
+
+    <EditText
+        android:id="@+id/edtLatitudCamara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Latitud"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtLongitudCamara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Longitud"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtCarreteraCamara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Carretera"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtKilometroCamara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Kilómetro"
+        android:inputType="text"/>
+
+    <!-- Nota: La imagen podría ser manejada mediante un botón para seleccionar un archivo o usar la cámara -->
+    <Button
+        android:id="@+id/btnSeleccionarImagen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleccionar Imagen"/>
+
+</LinearLayout>

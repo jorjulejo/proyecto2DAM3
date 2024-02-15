@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edtTipo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tipo"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtCausa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Causa"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtComienzo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Comienzo (yyyy-MM-dd)"
+        android:inputType="date"/>
+
+    <EditText
+        android:id="@+id/edtNivelIncidencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nivel de Incidencia"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtCarretera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Carretera"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtDireccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Dirección"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtLatitud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Latitud"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edtLongitud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Longitud"
+        android:inputType="text"/>
+
+</LinearLayout>

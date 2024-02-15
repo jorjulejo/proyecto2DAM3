@@ -18,6 +18,21 @@ public class IncidenciaControlador {
         JsonArray resultado = incidenciaServicio.seleccionarIncidencias();
         return ResponseEntity.ok(resultado);
     }
+    @PostMapping("/seleccionarByUsename")
+    public ResponseEntity<?> seleccionarIncidenciasByUsername(@RequestBody String jsonIncidencia) {
+        // Aquí deberías validar el token JWT
+        JsonArray resultado = incidenciaServicio.seleccionarIncidenciasByUsername(jsonIncidencia);
+        return ResponseEntity.ok(resultado);
+    }
+    
+    @PostMapping("/seleccionarById")
+    public ResponseEntity<?> seleccionarIncidenciasById(@RequestBody String jsonIncidencia) {
+        // Aquí deberías validar el token JWT
+        JsonArray resultado = incidenciaServicio.seleccionarIncidenciasbyId(jsonIncidencia);
+        return ResponseEntity.ok(resultado);
+    }
+    
+    
 
     @PostMapping("/insertar")
     public ResponseEntity<?> insertarIncidencia(@RequestBody String jsonIncidencia) {

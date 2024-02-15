@@ -34,7 +34,61 @@ public class CamaraServicio {
 		return jsonArray;
 	}
 
+	public JsonArray seleccionarCamarasByUsername(String username) {
+		Query query = entityManager.createNativeQuery("SELECT pkg_camaras.seleccionar_camaras_byUsername(:username) FROM DUAL");
+		query.setParameter("username", username);
+		Clob clob = (Clob) query.getSingleResult();
+		String jsonString = convertClobToString(clob);
+		JsonArray jsonArray = null;
+
+		try (JsonReader jsonReader = Json.createReader(new StringReader(jsonString))) {
+			jsonArray = jsonReader.readArray(); // Cambiado de readObject() a readArray()
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return jsonArray;
+	}
+	
+	public JsonArray seleccionarCamarasbyId(String id) {
+		Query query = entityManager.createNativeQuery("SELECT pkg_camaras.seleccionar_camaras_byId(:id) FROM DUAL");
+		query.setParameter("id", id);
+		Clob clob = (Clob) query.getSingleResult();
+		String jsonString = convertClobToString(clob);
+		JsonArray jsonArray = null;
+
+		try (JsonReader jsonReader = Json.createReader(new StringReader(jsonString))) {
+			jsonArray = jsonReader.readArray(); // Cambiado de readObject() a readArray()
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return jsonArray;
+	}
+	
+	public JsonArray seleccionarImagenbyId(String id) {
+		Query query = entityManager.createNativeQuery("SELECT pkg_camaras.seleccionar_imagen_byId(:id) FROM DUAL");
+		query.setParameter("id", id);
+		Clob clob = (Clob) query.getSingleResult();
+		String jsonString = convertClobToString(clob);
+		JsonArray jsonArray = null;
+
+		try (JsonReader jsonReader = Json.createReader(new StringReader(jsonString))) {
+			jsonArray = jsonReader.readArray(); // Cambiado de readObject() a readArray()
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return jsonArray;
+	}
+
+
+
 	private String convertClobToString(Clob clob) {
+		if (clob == null) {
+	        // Manejar el caso nulo, por ejemplo, devolver una cadena vacía o null
+	        return ""; // o puedes devolver "" si prefieres una cadena vacía
+	    }
 		StringBuilder sb = new StringBuilder();
 		try {
 			java.io.Reader reader = clob.getCharacterStream();

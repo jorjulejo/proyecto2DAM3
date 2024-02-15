@@ -1,29 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../assets/IncidentForm.css';
+import useToken from '../Store/useStore'; // Importa el store
 
 function IncidentForm() {
   const location = useLocation();
   const isEditing = location.state && location.state.incident;
+  const { token } = useToken();
+
+  function transformIncidentData(incidentData) {
+    const transformedData = {};
+    for (const key in incidentData) {
+      if (
+        incidentData[key] &&
+        typeof incidentData[key] === 'object' &&
+        'string' in incidentData[key]
+      ) {
+        transformedData[key] = incidentData[key].string;
+      } else if (
+        incidentData[key] &&
+        typeof incidentData[key] === 'object' &&
+        !('string' in incidentData[key])
+      ) {
+        transformedData[key] = ''; // Si es un objeto sin propiedad 'string', establece el campo como una cadena vacía
+      } else {
+        transformedData[key] = incidentData[key];
+      }
+    }
+    return transformedData;
+  }
+
+
 
   const initialState = {
     tipo: '',
     causa: '',
-    fechaComienzo: '',
-    nivelDeIncidencia: '',
+    comienzo: '',
+    nivel_incidencia: '',
     carretera: '',
     direccion: '',
     latitud: '',
     longitud: '',
+    usuario: 'ikbdt@plaiaundi.net'
   };
+  function formatDate(dateString) {
+    const parts = dateString.match(/(\d{2})-(\w{3})-(\d{2})/);
+    if (!parts) return '';
+
+    const months = {
+      'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06',
+      'JUL': '07', 'AUG': '08', 'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'
+    };
+    const year = '20' + parts[3];
+    const month = months[parts[2].toUpperCase()];
+    const day = parts[1];
+
+    return `${year}-${month}-${day}`;
+  }
 
   const [incident, setIncident] = useState(initialState);
 
   useEffect(() => {
-    if (isEditing) {
-      setIncident(location.state.incident);
+    if (isEditing && location.state.incident) {
+      // Primero transforma los datos para obtener solo los valores 'string'
+      const transformedIncident = transformIncidentData(location.state.incident);
+
+      // Luego, formatea la fecha de comienzo si es necesario
+      if (transformedIncident.comienzo) {
+        transformedIncident.comienzo = formatDate(transformedIncident.comienzo);
+      }
+
+      // Establece el estado con los datos transformados y formateados
+      setIncident(transformedIncident);
     }
   }, [location, isEditing]);
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,23 +85,38 @@ function IncidentForm() {
     }));
   };
 
+
+  const rutaActualizar = 'actualizar'; // Reemplaza con tu ruta real para actualizar
+  const rutaInsertar = 'insertar';
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Comprobación para asegurarse de que todos los campos están completos
+    const camposRequeridos = ['tipo', 'causa', 'comienzo', 'nivel_incidencia', 'carretera', 'direccion', 'latitud', 'longitud'];
+    const camposIncompletos = camposRequeridos.some(campo => !incident[campo]);
+
+    if (camposIncompletos) {
+      alert('Por favor, completa todos los campos antes de enviar.');
+      return; // Detener la función si hay campos incompletos
+    }
+
     const method = isEditing ? 'PUT' : 'POST';
-    const url = `https://tu-api.com/incidencias/${isEditing ? incident.id : ''}`;
+    const url = `http://127.0.0.1:8080/api/incidencias/${isEditing ? rutaActualizar : rutaInsertar}`;
 
     try {
       const response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Asegúrate de que el token es correcto
         },
         body: JSON.stringify(incident)
       });
 
       if (response.ok) {
         // Procesar respuesta
-        setIncident(initialState);
+        if (!isEditing)
+          setIncident(initialState);
       } else {
         console.error('Error en la respuesta del servidor:', response.status);
       }
@@ -58,27 +125,6 @@ function IncidentForm() {
     }
   };
 
-  const handleDelete = async () => {
-    if (isEditing) {
-      try {
-        const response = await fetch(`https://tu-api.com/incidencias/${incident.id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-
-        if (response.ok) {
-          // Procesar respuesta
-          setIncident(initialState);
-        } else {
-          console.error('Error en la respuesta del servidor:', response.status);
-        }
-      } catch (error) {
-        console.error('Error al intentar borrar:', error);
-      }
-    }
-  };
 
   return (
     <div className="incident-form">
@@ -88,10 +134,11 @@ function IncidentForm() {
           <label>Tipo</label>
           <input
             type="text"
-            name="tipo"
+            name="tipo" // El nombre del campo debe ser "tipo"
             value={incident.tipo}
             onChange={handleChange}
           />
+
         </div>
         <div className="form-group">
           <label>Causa</label>
@@ -106,8 +153,8 @@ function IncidentForm() {
           <label>Fecha de Comienzo</label>
           <input
             type="date"
-            name="fechaComienzo"
-            value={incident.fechaComienzo}
+            name="comienzo"
+            value={incident.comienzo}
             onChange={handleChange}
           />
         </div>
@@ -115,8 +162,8 @@ function IncidentForm() {
           <label>Nivel de Incidencia</label>
           <input
             type="text"
-            name="nivelDeIncidencia"
-            value={incident.nivelDeIncidencia}
+            name="nivel_incidencia"
+            value={incident.nivel_incidencia}
             onChange={handleChange}
           />
         </div>

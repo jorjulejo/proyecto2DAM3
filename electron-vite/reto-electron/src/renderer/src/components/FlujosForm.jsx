@@ -1,53 +1,118 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import '../assets/FlujosForm.css';
+import useToken from '../Store/useStore'; // Importa el store
+
 
 function FlujosForm() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
-  const [flujos, setFlujos] = useState({
-    FECHA: '',
-    RANGO_TIEMPO: '',
-    MEDIA_VELOCIDAD: '',
-    TOTAL_VEHICULOS: '',
-    LATITUD: '',
-    LONGITUD: '',
-    USUARIO: ''
-  });
+  const isEditing = location.state && location.state.flujo;
+  const { token } = useToken();
+
+  function transformFlujoData(flujoData) {
+    const transformedData = {};
+    for (const key in flujoData) {
+      if (
+        flujoData[key] &&
+        typeof flujoData[key] === 'object' &&
+        'string' in flujoData[key]
+      ) {
+        transformedData[key] = flujoData[key].string;
+      } else if (
+        flujoData[key] &&
+        typeof flujoData[key] === 'object' &&
+        !('string' in flujoData[key])
+      ) {
+        transformedData[key] = ''; // Si es un objeto sin propiedad 'string', establece el campo como una cadena vacía
+      } else {
+        transformedData[key] = flujoData[key];
+      }
+    }
+    return transformedData;
+  }
+
+  const initialState = {
+    fecha: '',
+    rango_tiempo: '',
+    media_velocidad: '',
+    total_vehiculos: '',
+    latitud: '',
+    longitud: '',
+    usuario: 'ikbdt@plaiaundi.com'
+  };
+
+  function formatDate(dateString) {
+    const parts = dateString.match(/(\d{2})-(\w{3})-(\d{2})/);
+    if (!parts) return '';
+
+    const months = {
+      'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06',
+      'JUL': '07', 'AUG': '08', 'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'
+    };
+    const year = '20' + parts[3];
+    const month = months[parts[2].toUpperCase()];
+    const day = parts[1];
+
+    return `${year}-${month}-${day}`;
+  }
+
+  const [flujos, setFlujos] = useState(initialState);
+
 
   useEffect(() => {
-    if (location.state?.flujos) {
-      setFlujos(location.state.flujos);
-      setIsEditing(true);
+    if (isEditing && location.state.flujo) {
+      // Primero transforma los datos para obtener solo los valores 'string'
+      const transformedFlujo = transformFlujoData(location.state.flujo);
+
+      // Luego, formatea la fecha de comienzo si es necesario
+      if (transformedFlujo.comienzo) {
+        transformedFlujo.comienzo = formatDate(transformedFlujo.comienzo);
+      }
+
+      // Establece el estado con los datos transformados y formateados
+      setFlujos(transformedFlujo);
     }
-  }, [location.state?.flujos]);
+  }, [location, isEditing]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFlujos(prev => ({ ...prev, [name]: value }));
+    setFlujos((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
+  const rutaActualizar = 'actualizar'; // Reemplaza con tu ruta real para actualizar
+  const rutaInsertar = 'insertar';
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aqu� puedes agregar validaciones antes de enviar
+
+    // Comprobación para asegurarse de que todos los campos están completos
+    const camposRequeridos = ['fecha', 'rango_tiempo', 'media_velocidad', 'total_vehiculos', 'latitud', 'longitud'];
+    const camposIncompletos = camposRequeridos.some(campo => !flujos[campo]);
+
+    if (camposIncompletos) {
+      alert('Por favor, completa todos los campos antes de enviar.');
+      return; // Detiene la función si hay campos incompletos
+    }
+
     const method = isEditing ? 'PUT' : 'POST';
-    const url = `https://tu-api.com/flujos/${isEditing ? flujos.id : ''}`;
+    const url = `http://127.0.0.1:8080/api/flujos/${isEditing ? rutaActualizar : rutaInsertar}`;
 
     try {
       const response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Asegúrate de que el token es correcto
         },
         body: JSON.stringify(flujos)
       });
 
       if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-        setFlujos(initialState);
-        navigate('/flujos-de-trafico');
+        // Procesar respuesta
+        if (!isEditing)
+          setFlujos(initialState);
       } else {
         console.error('Error en la respuesta del servidor:', response.status);
       }
@@ -56,19 +121,24 @@ function FlujosForm() {
     }
   };
 
+
   const handleDelete = async () => {
     if (isEditing) {
       try {
-        const response = await fetch(`https://tu-api.com/flujos/${flujos.id}`, {
+        const deleteData = { id: flujos.id }; // Crear el objeto JSON con el campo "id"
+
+        const response = await fetch(`http://127.0.0.1:8080/api/flujos/borrar`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-          }
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(deleteData) // Convertir el objeto JSON a una cadena JSON
         });
 
         if (response.ok) {
+          // Procesar respuesta
           setFlujos(initialState);
-          navigate('/flujos-de-trafico');
         } else {
           console.error('Error en la respuesta del servidor:', response.status);
         }
@@ -78,37 +148,33 @@ function FlujosForm() {
     }
   };
 
-  const handleReset = () => {
-    setFlujos(initialState);
-  };
-
   return (
     <div className="flujos-form">
       <h1 className='flujo-text'>Gestion de Trafico - Flujos</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Fecha</label>
-          <input type="date" name="FECHA" value={flujos.FECHA} onChange={handleChange} />
+          <input type="date" name="fecha" value={flujos.fecha} onChange={handleChange} />
         </div>
         <div className="form-group">
           <label>Rango de Tiempo</label>
-          <input type="number" name="RANGO_TIEMPO" value={flujos.RANGO_TIEMPO} onChange={handleChange} />
+          <input type="number" name="rango_tiempo" value={flujos.rango_tiempo} onChange={handleChange} />
         </div>
         <div className="form-group">
           <label>Media de Velocidad</label>
-          <input type="number" name="MEDIA_VELOCIDAD" value={flujos.MEDIA_VELOCIDAD} onChange={handleChange} />
+          <input type="number" name="media_velocidad" value={flujos.media_velocidad} onChange={handleChange} />
         </div>
         <div className="form-group">
           <label>Total de Vehículos</label>
-          <input type="number" name="TOTAL_VEHICULOS" value={flujos.TOTAL_VEHICULOS} onChange={handleChange} />
+          <input type="number" name="total_vehiculos" value={flujos.total_vehiculos} onChange={handleChange} />
         </div>
         <div className="form-group">
           <label>Latitud</label>
-          <input type="text" name="LATITUD" value={flujos.LATITUD} onChange={handleChange} />
+          <input type="text" name="latitud" value={flujos.latitud} onChange={handleChange} />
         </div>
         <div className="form-group">
           <label>Longitud</label>
-          <input type="text" name="LONGITUD" value={flujos.LONGITUD} onChange={handleChange} />
+          <input type="text" name="longitud" value={flujos.longitud} onChange={handleChange} />
         </div>
         <div className="form-actions">
           {isEditing && (

@@ -29,7 +29,7 @@ public class SecurityConfig {
         http.csrf().disable(); // Deshabilitar CSRF
 
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers("/usuarios/registro", "/usuarios/login").permitAll() // Permitir acceso sin autenticación
+                .requestMatchers("/usuarios/registro", "/usuarios/login","/usuarios/enviar-correo","/usuarios/seleccionarUsuario","/usuarios/seleccionarAdmin").permitAll() // Permitir acceso sin autenticación
                 .requestMatchers("/api/incidencias/**").authenticated() // Requerir autenticación para /api/incidencias/**
                 .requestMatchers("/api/camaras/**").authenticated()
                 .requestMatchers("/api/flujos/**").authenticated()
