@@ -125,6 +125,32 @@ function IncidentForm() {
     }
   };
 
+  const handleDelete = async () => {
+    if (isEditing) {
+      try {
+        const deleteData = { id: incident.id }; // Crear el objeto JSON con el campo "id"
+
+        const response = await fetch(`http://127.0.0.1:8080/api/incidencias/borrar`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(deleteData) // Convertir el objeto JSON a una cadena JSON
+        });
+
+        if (response.ok) {
+          // Procesar respuesta
+          setFlujos(initialState);
+        } else {
+          console.error('Error en la respuesta del servidor:', response.status);
+        }
+      } catch (error) {
+        console.error('Error al intentar borrar:', error);
+      }
+    }
+  };
+
 
   return (
     <div className="incident-form">
